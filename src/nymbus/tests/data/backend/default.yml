@@ -1,0 +1,7 @@
+steps:
+
+  build:
+    command: echo built
+
+  deploy:
+    command: echo deployed
