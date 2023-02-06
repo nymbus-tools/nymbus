@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List
 
 from nymbus.config.component import Component
-from nymbus.config.environment import DEFAULT_ENVIRONMENT, DEFAULT_ENVIRONMENT_FILE
+from nymbus.config.environment import DEFAULT_ENVIRONMENT, DEFAULT_ENVIRONMENT_FILE, DEFAULT_NYMBUS_EXTENSION
 from nymbus.config.envspec import EnvSpec
 from nymbus.config.readers.reader import merge_dictionaries, read_yml
 from nymbus.config.step import Step
@@ -15,7 +15,7 @@ def read_dicts_merging(context: Path, environment: str = DEFAULT_ENVIRONMENT, op
     default = read_yml(default_location)
 
     # Read the component from the location
-    location = Path(context) / f"{environment}.yml"
+    location = Path(context) / f"{environment}.{DEFAULT_NYMBUS_EXTENSION}"
     if location.exists() or not optional_env:
         specific = read_yml(location)
 
