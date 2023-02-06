@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Dict
 
 from nymbus.config.envspec import EnvSpec
-from nymbus.config.reader import read_yml
+from nymbus.config.readers.reader import read_yml
 from nymbus.config.step import Step
 
 logger = logging.getLogger(__name__)
@@ -23,10 +23,10 @@ class Component(EnvSpec):
         }
 
         # If there are still configs, they are unknown. Print a warning (for retro-compatibility)
+        config.pop("env")
         if config:
             logger.warning(f"Unknown configuration in file \"{self.name}\": {config}")
 
     @classmethod
     def from_file(cls, location: Path):
         return cls(location.parent.name, read_yml(location))
-

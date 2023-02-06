@@ -5,6 +5,7 @@ import re
 logger = logging.getLogger(__name__)
 
 DEFAULT_ENVIRONMENT = "default"
+DEFAULT_ENVIRONMENT_FILE = f"{DEFAULT_ENVIRONMENT}.yml"
 VARIABLE_EXPANSION = re.compile(r"^\$\{([^}]+)}$")
 
 
