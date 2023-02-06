@@ -24,7 +24,7 @@ def main():
     # Run
     run = subparsers.add_parser("run")
     run.add_argument("environment", help="Environment name (of the <env>.yml target file)")
-    run.add_argument("step", nargs="?", default=None, help="Step name (in the <env>.yml file)")
+    run.add_argument("--step", default=None, help="Step name (in the <env>.yml file)")
     run.set_defaults(action=lambda args, rest: Runner().run(args.context, args.environment, args.step))
 
     # Parse args

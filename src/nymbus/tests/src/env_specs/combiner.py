@@ -12,9 +12,8 @@ def combine(data_location: Path):
 
     # Read component and merge envs
     component = read_component(data_location/"backend", "dev")
-    env = merge_envs(data_location, component, component.steps["deploy"])
+    env_spec = merge_envs(data_location, component, component.steps["deploy"])
 
-    assert env["SECRET"] == redacted
-    assert env["PROJECT"] == "project-dev"
-    assert env["STANDARD"] == "high"
-
+    assert env_spec.env["SECRET"] == redacted
+    assert env_spec.env["PROJECT"] == "project-dev"
+    assert env_spec.env["STANDARD"] == "low"

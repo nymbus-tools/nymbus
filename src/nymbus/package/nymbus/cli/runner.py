@@ -1,5 +1,4 @@
 import logging
-import logging
 import os
 from pathlib import Path
 
@@ -21,7 +20,7 @@ class Runner:
 
         # Check step existence
         if step and step not in component.steps:
-            raise Exception(f"Step {step} is not {location}")
+            raise Exception(f"Step {step} is not in {location}")
 
         # Run it (or them, if step is not specified)
         steps = [step] if step else component.steps
@@ -32,10 +31,11 @@ class Runner:
             log_title(logger, target.name)
 
             # Merge envs
-            env = merge_envs(location, component, target, environment)
+            env_spec = merge_envs(location, component, target, environment)
+            env_spec.expand()
 
             # Run it
             Shell().run(
                 target.command,
-                env=env
+                env=env_spec.env
             )

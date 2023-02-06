@@ -22,4 +22,5 @@ def expand_variable(value: str):
         variable_value = os.environ.get(variable_name, None)
         if variable_value is None:
             logger.warning(f"Variable {variable_name} is not set.")
+            variable_value = ""
         return variable_value

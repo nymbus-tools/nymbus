@@ -28,7 +28,7 @@ def read_dicts_merging(context: Path, environment: str = DEFAULT_ENVIRONMENT, op
 
 
 def read_component(context: Path, environment: str = DEFAULT_ENVIRONMENT):
-    result = read_dicts_merging(context, environment)
+    result = read_dicts_merging(context, environment, optional_env=False)
     return Component(environment, result)
 
 
@@ -64,13 +64,13 @@ def read_upper_env_specs_merging(location: Path, environment: str = DEFAULT_ENVI
     return EnvSpec(result)
 
 
-def merge_envs(location: Path, component: Component, target_step: Step = None, environment: str = DEFAULT_ENVIRONMENT):
+def merge_envs(location: Path, component: Component, target_step: Step = None, environment: str = DEFAULT_ENVIRONMENT) -> EnvSpec:
 
     # Read the upper envs, merging them
     env_spec = read_upper_env_specs_merging(location, environment)
 
     # Reduce them with component and step
-    return functools.reduce(
+    return EnvSpec.from_env(functools.reduce(
         merge_dictionaries,
-        [env_spec.env, component.env] + [target_step.env] if target_step else []
-    )
+        [env_spec.env, component.env] + ([target_step.env] if target_step else [])
+    ))
