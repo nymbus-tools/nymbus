@@ -15,7 +15,7 @@ def read_dicts_merging(context: Path, environment: str = DEFAULT_ENVIRONMENT, op
     default = read_yml(default_location)
 
     # Read the component from the location
-    location = Path(context) / f"{environment}.{DEFAULT_NYMBUS_EXTENSION}"
+    location = Path(context) / f"{environment}{DEFAULT_NYMBUS_EXTENSION}"
     if location.exists() or not optional_env:
         specific = read_yml(location)
 
@@ -29,7 +29,7 @@ def read_dicts_merging(context: Path, environment: str = DEFAULT_ENVIRONMENT, op
 
 def read_component(context: Path, environment: str = DEFAULT_ENVIRONMENT):
     result = read_dicts_merging(context, environment, optional_env=False)
-    return Component(environment, result)
+    return Component(context.name, environment, result)
 
 
 def _has_env_spec(location: Path) -> bool:

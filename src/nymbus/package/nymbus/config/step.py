@@ -1,5 +1,6 @@
 import logging
 
+from nymbus.config.environment import DEFAULT_NYMBUS_EXTENSION
 from nymbus.config.envspec import EnvSpec
 
 logger = logging.getLogger(__name__)
@@ -7,16 +8,18 @@ logger = logging.getLogger(__name__)
 
 class Step(EnvSpec):
 
-    def __init__(self, name: str, yml: dict):
+    def __init__(self, name: str, environment: str, yml: dict):
         super().__init__(yml)
         self.name = name
+        self.environment = environment
 
         # Pop the config entries
         config = yml.copy()
-        self.command = config.pop("command", "")
+        self.command = config.pop("command", None)
         self.image = config.pop("image", None)
 
         # If there are still configs, they are unknown. Print a warning (for retro-compatibility)
         config.pop("env", {})
         if config:
-            logger.warning(f"Unknown configuration in file \"{self.name}\": {config}")
+            logger.warning(f"Unknown configuration in component \"{self.name}\", "
+                           f"file {self.environment}{DEFAULT_NYMBUS_EXTENSION}: {config}")
