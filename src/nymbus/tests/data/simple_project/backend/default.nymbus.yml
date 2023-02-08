@@ -1,7 +1,11 @@
 steps:
 
   build:
+    image:
+      name: nginx:latest
     command: echo built
 
   deploy:
+    image:
+      name: nginx:latest
     command: echo deployed

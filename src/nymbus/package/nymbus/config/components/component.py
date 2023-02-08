@@ -5,7 +5,7 @@ from typing import Dict
 from nymbus.config.environment import DEFAULT_NYMBUS_EXTENSION
 from nymbus.config.envspec import EnvSpec
 from nymbus.config.readers.reader import read_yml
-from nymbus.config.step import Step
+from nymbus.config.components.step import Step
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +19,7 @@ class Component(EnvSpec):
 
         # Pop the config entries
         config = yml.copy()
+        self.context = config.pop("context", None)
         self.steps: Dict[str, Step] = {
             step: Step(step, environment, step_config)
             for step, step_config in config.pop("steps", {}).items()

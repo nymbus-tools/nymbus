@@ -2,6 +2,7 @@ import logging
 
 from nymbus.config.environment import DEFAULT_NYMBUS_EXTENSION
 from nymbus.config.envspec import EnvSpec
+from nymbus.config.images.image import Image
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +17,10 @@ class Step(EnvSpec):
         # Pop the config entries
         config = yml.copy()
         self.command = config.pop("command", None)
-        self.image = config.pop("image", None)
+        image = config.pop("image", None)
+        self.image = Image(image) if image else None
+        template = config.pop("template", None)
+        self.template = Template(template) if template else None
 
         # If there are still configs, they are unknown. Print a warning (for retro-compatibility)
         config.pop("env", {})

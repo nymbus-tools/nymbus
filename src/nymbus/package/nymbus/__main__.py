@@ -13,19 +13,20 @@ def main():
     # Nymbus
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", help="Print a stacktrace of errors", action="store_true")
-    parser.add_argument("--context", default=os.getcwd(), help="Path to the folder containing the <env>.yml files")
     parser.set_defaults(action=lambda args: parser.parse_args(["-h"]))
     subparsers = parser.add_subparsers()
 
     # Setup
     setup = subparsers.add_parser("setup")
-    setup.set_defaults(action=lambda args, rest: Setupper().manage(args.context))
+    setup.set_defaults(action=lambda args, rest: Setupper().manage(args.component))
 
     # Run
     run = subparsers.add_parser("run")
+    run.add_argument("component", help="Path to the folder containing the <env>.yml files (relative or not)")
     run.add_argument("environment", help="Environment name (of the <env>.yml target file)")
+    run.add_argument("--context", default=None, help="Path to the folder that will be visibile in docker steps")
     run.add_argument("--step", default=None, help="Step name (in the <env>.yml file)")
-    run.set_defaults(action=lambda args, rest: Runner().run(args.context, args.environment, args.step))
+    run.set_defaults(action=lambda args, rest: Runner().run(args.component, args.environment, args.step, args.context))
 
     # Parse args
     arguments, remainder = parser.parse_known_args()

@@ -4,38 +4,36 @@ from pathlib import Path
 
 from nymbus.cli.console.output import log_title
 from nymbus.config.environment import DEFAULT_ENVIRONMENT
-from nymbus.config.readers.combiner import read_component, merge_envs
-from nymbus.tools.shell import Shell
+from nymbus.config.readers.combiner import read_component, merge_envs, find_env_spec_locations
+from nymbus.tools import system
 
 logger = logging.getLogger(__name__)
 
 
 class Runner:
 
-    def run(self, context: str = os.getcwd(), environment: str = DEFAULT_ENVIRONMENT, step: str = None) -> None:
+    def run(self, component_path: str, environment: str = DEFAULT_ENVIRONMENT, step_name: str = None, context: str = None) -> None:
 
         # Read component
-        location = Path(context)
+        location = component_path if Path(component_path).is_absolute() else Path(os.getcwd())/component_path
         component = read_component(location, environment)
 
         # Check step existence
-        if step and step not in component.steps:
-            raise Exception(f"Step {step} is not in {location}")
+        if step_name and step_name not in component.steps:
+            raise Exception(f"Step {step_name} is not in {location}")
 
         # Run it (or them, if step is not specified)
-        steps = [step] if step else component.steps
-        for target_step in steps:
+        steps = [step_name] if step_name else component.steps
+        for target_step_name in steps:
 
             # Get the target step
-            target = component.steps[target_step]
-            log_title(logger, target.name)
+            target_step = component.steps[target_step_name]
+            log_title(logger, target_step.name)
 
             # Merge envs
-            env_spec = merge_envs(location, component, target, environment)
+            env_spec = merge_envs(location, component, target_step, environment)
             env_spec.expand()
 
-            # Run it
-            Shell().run(
-                target.command,
-                env=env_spec.env
-            )
+            # Run the step
+            context = context or component.context or location
+            system.run(target_step, env_spec, location, context)

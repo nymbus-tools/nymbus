@@ -2,11 +2,11 @@ import functools
 from pathlib import Path
 from typing import List
 
-from nymbus.config.component import Component
+from nymbus.config.components.component import Component
 from nymbus.config.environment import DEFAULT_ENVIRONMENT, DEFAULT_ENVIRONMENT_FILE, DEFAULT_NYMBUS_EXTENSION
 from nymbus.config.envspec import EnvSpec
 from nymbus.config.readers.reader import merge_dictionaries, read_yml
-from nymbus.config.step import Step
+from nymbus.config.components.step import Step
 
 
 def read_dicts_merging(context: Path, environment: str = DEFAULT_ENVIRONMENT, optional_env: bool = True) -> dict:
@@ -36,7 +36,7 @@ def _has_env_spec(location: Path) -> bool:
     return (location/DEFAULT_ENVIRONMENT_FILE).exists()
 
 
-def _find_env_specs(location: Path, include_current: bool = False) -> List[Path]:
+def find_env_spec_locations(location: Path, include_current: bool = False) -> List[Path]:
 
     # Go up the uppermost env file
     env_specs = []
@@ -51,7 +51,7 @@ def _find_env_specs(location: Path, include_current: bool = False) -> List[Path]
 def read_upper_env_specs_merging(location: Path, environment: str = DEFAULT_ENVIRONMENT, optional_env: bool = True) -> EnvSpec:
 
     # Find all upper EnvSpec paths
-    env_spec_paths = _find_env_specs(location)
+    env_spec_paths = find_env_spec_locations(location)
 
     # Read them all
     env_specs = [
