@@ -1,0 +1,14 @@
+env:
+  PROJECT: project-dev
+  SECRET: ${DEV_SECRET}
+
+steps:
+
+  deploy:
+    env:
+      STANDARD: low
+    command: ls -la /mnt/.nymbus/template
+    template:
+      repository: git@github.com:nymbus-tools/nymbus.git
+      tag: feat/init
+

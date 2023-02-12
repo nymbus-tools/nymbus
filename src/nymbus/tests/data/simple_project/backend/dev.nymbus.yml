@@ -1,0 +1,9 @@
+env:
+  PROJECT: project-dev
+  SECRET: ${DEV_SECRET}
+
+steps:
+
+  deploy:
+    env:
+      STANDARD: low
