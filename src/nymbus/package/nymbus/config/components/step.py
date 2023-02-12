@@ -3,6 +3,7 @@ import logging
 from nymbus.config.environment import DEFAULT_NYMBUS_EXTENSION
 from nymbus.config.envspec import EnvSpec
 from nymbus.config.images.image import Image
+from nymbus.config.template import Template
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +20,8 @@ class Step(EnvSpec):
         self.command = config.pop("command", None)
         image = config.pop("image", None)
         self.image = Image(image) if image else None
+        if not self.command and not self.image:
+            raise RuntimeError("One of 'command' or 'image' must be not null")
         template = config.pop("template", None)
         self.template = Template(template) if template else None
 

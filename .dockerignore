@@ -1,5 +1,6 @@
 # Most of the content is taken from https://github.com/github/gitignore/blob/master/Python.gitignore
 .git/
+.nymbus/
 
 # IDE
 .idea/

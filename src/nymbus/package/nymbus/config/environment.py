@@ -5,6 +5,8 @@ import re
 logger = logging.getLogger(__name__)
 
 DEFAULT_ENVIRONMENT = "default"
+NYMBUS_FOLDER = ".nymbus"
+NYMBUS_OUTPUT_FOLDER = f"{NYMBUS_FOLDER}/output"
 DEFAULT_NYMBUS_EXTENSION = ".nymbus.yml"
 DEFAULT_ENVIRONMENT_FILE = f"{DEFAULT_ENVIRONMENT}{DEFAULT_NYMBUS_EXTENSION}"
 VARIABLE_EXPANSION = re.compile(r"^\$\{([^}]+)}$")
