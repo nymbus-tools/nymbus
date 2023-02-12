@@ -58,8 +58,8 @@ def run_in_docker(step: Step, env_spec: EnvSpec, component_path: Path, context: 
 
     volumes = {
         str(component_path/NYMBUS_OUTPUT_FOLDER): {'bind': '/mnt/.nymbus/component', 'mode': 'rw'},
-        context: {'bind': '/mnt/.nymbus/context', 'mode': 'ro'},
-        **{path: dict(bind) for path, bind in step.image.volumes.items()},
+        Path(context).absolute(): {'bind': '/mnt/.nymbus/context', 'mode': 'ro'},
+        **{path: vars(bind) for path, bind in step.image.volumes.items()},
     }
     volumes = volumes if not template else {**volumes, str(template): {'bind': '/mnt/.nymbus/template', 'mode': 'ro'}}
 
