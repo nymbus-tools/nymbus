@@ -2,7 +2,7 @@ name: Nymbus
 on:
   pull_request:
     types: [ opened, synchronize, reopened ]
-    branches: [ dev, master ]
+    branches: [ develop, master ]
   workflow_dispatch:
 
 defaults:
