@@ -1,0 +1,4 @@
+env:
+  PROJECT: project
+  STANDARD: high
+  SECRET: ${SECRET}
